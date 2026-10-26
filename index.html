@@ -1,22 +1,250 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>தமிழ் திருக்குறள்</title>
-    <meta name="description" content="Comprehensive Google Sites layout blueprints, ready-to-copy commentaries (மு.வ, சாலமன் பாப்பையா, கலைஞர்), custom HTML embed widgets, and classical Tamil literature portal." />
-    <meta property="og:title" content="தமிழ் திருக்குறள்" />
-    <meta property="og:description" content="Comprehensive Google Sites layout blueprints, ready-to-copy commentaries (மு.வ, சாலமன் பாப்பையா, கலைஞர்), custom HTML embed widgets, and classical Tamil literature portal." />
-    <meta property="og:type" content="website" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Mukta+Malar:wght@400;500;600;700&family=Noto+Sans+Tamil:wght@300;400;500;600;700&family=Noto+Serif+Tamil:wght@400;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
-</html>
+import React, { useState } from 'react';
 
+// Types
+interface Kural {
+  number: number;
+  section: string;
+  chapter: string;
+  line1: string;
+  line2: string;
+  muva: string;
+  solomon: string;
+  kalaignar: string;
+}
+
+// Sample Data
+const sampleKurals: Kural[] = [
+  {
+    number: 1,
+    section: 'அறத்துப்பால்',
+    chapter: 'கடவுள் வாழ்த்து',
+    line1: 'அகர முதல எழுத்தெல்லாம் ஆதி',
+    line2: 'भगवान् முதற்றே உலகு.',
+    muva: 'அகரம் எழுத்துகளுக்கு எல்லாம் அடிப்படையாகும். அதுபோல கடவுள் உலகத்திற்கு அடிப்படையಾಗ ிருக்கிறார்.',
+    solomon: 'எழுத்துக்கள் எல்லாம் அகரத்தை அடிப்படையாகக் கொண்டிருக்கின்றன. அதுபோல உலகம் கடவுளை அடிப்படையாகக் கொண்டுள்ளது.',
+    kalaignar: 'அகரம் எழுத்துகளுக்கு எல்லாம் தொடக்கமாய் அமைவது போல, உலகுக்குக் கடவுள் முதற்காரணமாக இருக்கிறான்.',
+  },
+  {
+    number: 2,
+    section: 'அறத்துப்பால்',
+    chapter: 'கடவுள் வாழ்த்து',
+    line1: 'கற்றதனால் ஆய பயன்கொல் خal',
+    line2: 'நற்றாள் தொழாஅர் எனின்.',
+    muva: 'நல்ல தாளை (கடவுளின் திருவடிகளை) தொழாதவர்கள், தாம் கற்ற கல்வியினால் என்ன பயனைப் பெற்றனர்?',
+    solomon: 'மெய்யறிவை ஊட்டும் கடவுளின் திருவடிகளைத் தொட்டு வணங்காதவர்கள், பல நூல்களைக் கற்றதனால் என்ன பயன்?',
+    kalaignar: 'இறைவனின் நல்ல திருவடிகளை வணங்கித் துதிக்காதவர்கள் கற்ற கல்வியால் என்ன பயன்? எந்தப் பயனுமில்லை.',
+  }
+];
+
+export default function App() {
+  const [activeTab, setActiveTab] = useState<'portal' | 'kurals' | 'blueprints' | 'widgets'>('portal');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedKural, setSelectedKural] = useState<Kural>(sampleKurals[0]);
+  const [copied, setCopied] = useState(false);
+
+  const handleCopyCode = (codeText: string) => {
+    navigator.clipboard.writeText(codeText);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  return (
+    <div className="min-h-screen bg-slate-50 text-slate-800 font-sans">
+      {/* Header */}
+      <header className="bg-emerald-800 text-white shadow-md sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-4 py-4 flex flex-col md:flex-row justify-between items-center">
+          <div className="flex items-center space-x-3 mb-3 md:mb-0">
+            <span className="material-symbols-outlined text-3xl">auto_stories</span>
+            <h1 className="text-2xl font-bold font-serif">தமிழ் திருக்குறள் போர்டல்</h1>
+          </div>
+          <nav className="flex flex-wrap gap-2">
+            <button
+              onClick={() => setActiveTab('portal')}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
+                activeTab === 'portal' ? 'bg-emerald-900 text-white' : 'hover:bg-emerald-700'
+              }`}
+            >
+              முகப்பு
+            </button>
+            <button
+              onClick={() => setActiveTab('kurals')}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
+                activeTab === 'kurals' ? 'bg-emerald-900 text-white' : 'hover:bg-emerald-700'
+              }`}
+            >
+              உரைகள் (Commentaries)
+            </button>
+            <button
+              onClick={() => setActiveTab('blueprints')}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
+                activeTab === 'blueprints' ? 'bg-emerald-900 text-white' : 'hover:bg-emerald-700'
+              }`}
+            >
+              Google Sites ப்ளூபிரிண்ட்ஸ்
+            </button>
+            <button
+              onClick={() => setActiveTab('widgets')}
+              className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
+                activeTab === 'widgets' ? 'bg-emerald-900 text-white' : 'hover:bg-emerald-700'
+              }`}
+            >
+              HTML எம்பெட் விட்ஜெட்டுகள்
+            </button>
+          </nav>
+        </div>
+      </header>
+
+      {/* Main Content */}
+      <main className="max-w-7xl mx-auto px-4 py-8">
+        {/* Portal Home View */}
+        {activeTab === 'portal' && (
+          <div className="space-y-8">
+            <div className="bg-gradient-to-r from-emerald-700 to-teal-800 text-white rounded-2xl p-8 shadow-lg">
+              <h2 className="text-3xl font-bold mb-4 font-serif">முத்தமிழ்க் குறள் மற்றும் இலக்கிய தளம்</h2>
+              <p className="text-emerald-100 text-lg max-w-2xl mb-6">
+                மு. வரதராசனார், சாலமன் பாப்பையா மற்றும் கலைஞர் ஆகியோரின் உரை விளக்கங்களுடன் திருக்குறளை ஆராயுங்கள். Google Sites மற்றும் வலைத்தளங்களுக்கான பிரத்யேக விட்ஜெட்டுகளைப் பெறுங்கள்.
+              </p>
+              <button
+                onClick={() => setActiveTab('kurals')}
+                className="bg-amber-500 hover:bg-amber-600 text-slate-900 font-semibold px-6 py-3 rounded-xl shadow transition"
+              >
+                உரைகளைக் காணுக
+              </button>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-6">
+              <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <span className="material-symbols-outlined text-emerald-700 text-3xl mb-3">menu_book</span>
+                <h3 className="text-xl font-bold mb-2">மு.வ உரை</h3>
+                <p className="text-slate-600">எளிய மற்றும் தெளிவான இலக்கண முறைசார்ந்த உரை விளக்கம்.</p>
+              </div>
+              <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <span className="material-symbols-outlined text-emerald-700 text-3xl mb-3">psychology</span>
+                <h3 className="text-xl font-bold mb-2">சாலமன் பாப்பையா உரை</h3>
+                <p className="text-slate-600">நவீன வாசகர்களுக்குப் புரியும் வகையில் எளிய நடையில் அமைந்த உரை.</p>
+              </div>
+              <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <span className="material-symbols-outlined text-emerald-700 text-3xl mb-3">edit_note</span>
+                <h3 className="text-xl font-bold mb-2">கலைஞர் உரை</h3>
+                <p className="text-slate-600">அரசியல் மற்றும் சமூகப் பார்வையில் குறளுக்கு முத்தமிழ்க் கலைஞர் வழங்கும் உரை.</p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Kurals & Commentaries View */}
+        {activeTab === 'kurals' && (
+          <div className="grid md:grid-cols-3 gap-8">
+            {/* Sidebar List */}
+            <div className="bg-white p-4 rounded-xl shadow-sm border border-slate-200 md:col-span-1">
+              <h3 className="font-bold text-lg mb-4 text-emerald-800">திருக்குறள் பட்டியல்</h3>
+              <div className="space-y-2">
+                {sampleKurals.map((k) => (
+                  <button
+                    key={k.number}
+                    onClick={() => setSelectedKural(k)}
+                    className={`w-full text-left p-3 rounded-lg transition ${
+                      selectedKural.number === k.number
+                        ? 'bg-emerald-50 border-l-4 border-emerald-600 font-semibold text-emerald-900'
+                        : 'hover:bg-slate-50 text-slate-700'
+                    }`}
+                  >
+                    குறள் {k.number}: {k.chapter}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Detailed Commentary View */}
+            <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 md:col-span-2 space-y-6">
+              <div className="border-b pb-4">
+                <span className="text-xs uppercase tracking-wider bg-emerald-100 text-emerald-800 px-2 py-1 rounded font-semibold">
+                  {selectedKural.section} • {selectedKural.chapter}
+                </span>
+                <h2 className="text-2xl font-bold mt-2 font-serif text-slate-900">
+                  குறள் எண்: {selectedKural.number}
+                </h2>
+                <div className="mt-4 p-4 bg-slate-50 rounded-lg text-center font-serif text-xl text-emerald-900">
+                  <p>{selectedKural.line1}</p>
+                  <p>{selectedKural.line2}</p>
+                </div>
+              </div>
+
+              {/* Commentaries Accordion / Grid */}
+              <div className="space-y-4">
+                <div className="p-4 rounded-lg bg-emerald-50/50 border border-emerald-100">
+                  <h4 className="font-bold text-emerald-900 mb-1">மு. வரதராசனார் உரை</h4>
+                  <p className="text-slate-700">{selectedKural.muva}</p>
+                </div>
+
+                <div className="p-4 rounded-lg bg-teal-50/50 border border-teal-100">
+                  <h4 className="font-bold text-teal-900 mb-1">சாலமன் பாப்பையா உரை</h4>
+                  <p className="text-slate-700">{selectedKural.solomon}</p>
+                </div>
+
+                <div className="p-4 rounded-lg bg-amber-50/50 border border-amber-100">
+                  <h4 className="font-bold text-amber-900 mb-1">கலைஞர் உரை</h4>
+                  <p className="text-slate-700">{selectedKural.kalaignar}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Google Sites Blueprints View */}
+        {activeTab === 'blueprints' && (
+          <div className="space-y-6">
+            <h2 className="text-2xl font-bold font-serif text-emerald-900">Google Sites Layout Blueprints</h2>
+            <p className="text-slate-600">கூகுள் சைட்ஸில் உடனடியாகப் பயன்படுத்தக்கூடிய மாதிரி லேஅவுட் அமைப்புகள்.</p>
+            
+            <div className="grid md:grid-cols-2 gap-6">
+              <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <h3 className="font-bold text-lg mb-2">இருபக்க உரை ஒப்பிடு லேஅவுட்</h3>
+                <p className="text-slate-600 mb-4">மு.வ மற்றும் கலைஞர் உரைகளை ஒரே பக்கத்தில் ஒப்பிட்டுப் பார்க்க ஏற்றது.</p>
+                <div className="h-32 bg-slate-100 rounded border-2 border-dashed border-slate-300 flex items-center justify-center text-slate-400">
+                  Blueprint Preview
+                </div>
+              </div>
+              <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
+                <h3 className="font-bold text-lg mb-2">தினசரி குறள் கார்டு</h3>
+                <p className="text-slate-600 mb-4">முகப்புப் பக்கத்தில் தினசரி ஒரு குறளைக் காட்டக் கூடிய லேஅவுட்.</p>
+                <div className="h-32 bg-slate-100 rounded border-2 border-dashed border-slate-300 flex items-center justify-center text-slate-400">
+                  Blueprint Preview
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Widgets View */}
+        {activeTab === 'widgets' && (
+          <div className="space-y-6">
+            <h2 className="text-2xl font-bold font-serif text-emerald-900">Custom HTML Embed Widgets</h2>
+            <p className="text-slate-600">உங்கள் வலைத்தளத்திலோ அல்லது கூகுள் சைட்ஸிலோ இணைக்கக் கூடிய எம்பெட் குறியீடு.</p>
+
+            <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 space-y-4">
+              <h3 className="font-bold text-lg">தினசரி குறள் விட்ஜெட் குறியீடு</h3>
+              <pre className="bg-slate-900 text-slate-100 p-4 rounded-lg overflow-x-auto text-sm font-mono">
+                {`<div style="font-family: sans-serif; padding: 16px; border: 1px solid #ddd; border-radius: 8px;">
+  <h3 style="color: #065f46;">இன்றைய குறள்</h3>
+  <p>அகர முதல எழுத்தெல்லாம் ஆதி பகவன் முதற்றே உலகு.</p>
+</div>`}
+              </pre>
+              <button
+                onClick={() => handleCopyCode('<div style="font-family: sans-serif; padding: 16px; border: 1px solid #ddd; border-radius: 8px;"><h3 style="color: #065f46;">இன்றைய குறள்</h3><p>அகர முதல எழுத்தெல்லாம் ஆதி பகவன் முதற்றே உலகு.</p></div>')}
+                className="bg-emerald-700 hover:bg-emerald-800 text-white px-4 py-2 rounded-lg text-sm transition"
+              >
+                {copied ? 'நகலெடுக்கப்பட்டது!' : 'குறியீட்டை நகலெடு (Copy Code)'}
+              </button>
+            </div>
+          </div>
+        )}
+      </main>
+
+      {/* Footer */}
+      <footer className="bg-slate-900 text-slate-400 py-6 mt-12 text-center text-sm">
+        <p>© 2026 தமிழ் திருக்குறள் போர்டல். அனைத்து உரிமைகளும் பாதுகாக்கப்பட்டவை.</p>
+      </footer>
+    </div>
+  );
+}
